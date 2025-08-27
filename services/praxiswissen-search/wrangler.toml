@@ -1,0 +1,24 @@
+name = "mica-praxiswissen"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+[site]
+bucket = "."
+
+# No build step needed for plain JS worker
+
+[[kv_namespaces]]
+binding = "KNOWLEDGE_BASE"
+id = "b98ceca812e847b4bccdf9fa8369b8de"
+
+[[kv_namespaces]]
+binding = "USER_SESSIONS"
+id = "93d52637f75b4dcbbc59d28c56dabb4c"
+
+[[routes]]
+pattern = "praxiswissen.mica.franzai.com/*"
+zone_name = "franzai.com"
+
+[vars]
+ENVIRONMENT = "production"
+CORS_ORIGIN = "*"

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MICA Neural Knowledge Network</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+    }
+    .animate-bounce { animation: bounce 1s infinite; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+  <div id="app" class="container mx-auto px-4 py-8 max-w-4xl">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">MICA Neural Knowledge Network</h1>
+      <p class="text-gray-600">Intelligente Unterstützung für Musikschaffende in Österreich</p>
+      
+      <!-- API Key Input -->
+      <div id="apiKeySection" class="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+        <h3 class="font-semibold text-yellow-800 mb-2">Gemini API Key benötigt</h3>
+        <p class="text-sm text-yellow-700 mb-3">
+          Bitte geben Sie Ihren Google Gemini API Key ein. 
+          <a href="https://makersuite.google.com/app/apikey" target="_blank" class="underline font-semibold">
+            Kostenlos bei Google AI Studio erhalten
+          </a>
+        </p>
+        <div class="flex gap-2">
+          <input 
+            type="password" 
+            id="apiKeyInput" 
+            placeholder="AIzaSy..."
+            class="flex-1 px-3 py-2 border border-yellow-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          >
+          <button 
+            onclick="saveApiKey()" 
+            class="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
+          >
+            Speichern
+          </button>
+        </div>
+      </div>
+
+      <div id="apiKeySuccess" class="mt-6 p-4 bg-green-50 rounded-lg border border-green-200 hidden">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="font-semibold text-green-800">API Key konfiguriert</h3>
+            <p class="text-sm text-green-600 mt-1" id="maskedKey"></p>
+          </div>
+          <button onclick="removeApiKey()" class="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200">
+            Entfernen
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Interface -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+      <div id="messages" class="space-y-4 mb-6 max-h-96 overflow-y-auto">
+        <div class="flex justify-start">
+          <div class="bg-gray-100 rounded-lg p-4 max-w-3xl">
+            <p class="text-gray-800">Hallo! Ich bin der MICA AI-Assistent. Wie kann ich Ihnen heute helfen?</p>
+            <p class="text-xs text-gray-500 mt-2">Ich kann Fragen zu Förderungen, Rechtlichem, Musikexport und mehr beantworten.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suggested Questions -->
+      <div id="suggestions" class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
+        <button onclick="askQuestion('Welche Förderungen gibt es für Musikschaffende?')" 
+          class="text-left p-3 bg-blue-50 rounded hover:bg-blue-100 text-sm">
+          🎵 Welche Förderungen gibt es?
+        </button>
+        <button onclick="askQuestion('Wie funktioniert die Künstlersozialversicherung?')" 
+          class="text-left p-3 bg-blue-50 rounded hover:bg-blue-100 text-sm">
+          💼 Künstlersozialversicherung erklärt
+        </button>
+        <button onclick="askQuestion('Was muss ich beim Musikexport beachten?')" 
+          class="text-left p-3 bg-blue-50 rounded hover:bg-blue-100 text-sm">
+          🌍 Musikexport Tipps
+        </button>
+        <button onclick="askQuestion('Welche MICA Workshops gibt es?')" 
+          class="text-left p-3 bg-blue-50 rounded hover:bg-blue-100 text-sm">
+          🎓 Aktuelle Workshops
+        </button>
+      </div>
+
+      <!-- Input -->
+      <div class="flex gap-2">
+        <input 
+          type="text" 
+          id="messageInput" 
+          placeholder="Stellen Sie Ihre Frage..."
+          class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          onkeypress="if(event.key === 'Enter') sendMessage()"
+        >
+        <button 
+          onclick="sendMessage()" 
+          id="sendButton"
+          class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+        >
+          Senden
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Check for stored API key on load
+    window.onload = function() {
+      const storedKey = localStorage.getItem('gemini_api_key');
+      if (storedKey) {
+        document.getElementById('apiKeySection').classList.add('hidden');
+        document.getElementById('apiKeySuccess').classList.remove('hidden');
+        document.getElementById('maskedKey').textContent = 
+          storedKey.substring(0, 10) + '...' + storedKey.substring(storedKey.length - 4);
+      }
+    };
+
+    function saveApiKey() {
+      const key = document.getElementById('apiKeyInput').value;
+      if (!key.startsWith('AIzaSy')) {
+        alert('Ungültiges API Key Format. Gemini Keys beginnen mit "AIzaSy"');
+        return;
+      }
+      localStorage.setItem('gemini_api_key', key);
+      document.getElementById('apiKeySection').classList.add('hidden');
+      document.getElementById('apiKeySuccess').classList.remove('hidden');
+      document.getElementById('maskedKey').textContent = 
+        key.substring(0, 10) + '...' + key.substring(key.length - 4);
+      document.getElementById('apiKeyInput').value = '';
+    }
+
+    function removeApiKey() {
+      localStorage.removeItem('gemini_api_key');
+      document.getElementById('apiKeySection').classList.remove('hidden');
+      document.getElementById('apiKeySuccess').classList.add('hidden');
+    }
+
+    function askQuestion(question) {
+      document.getElementById('messageInput').value = question;
+      sendMessage();
+    }
+
+    async function sendMessage() {
+      const apiKey = localStorage.getItem('gemini_api_key');
+      if (!apiKey) {
+        alert('Bitte erst API Key eingeben!');
+        return;
+      }
+
+      const input = document.getElementById('messageInput');
+      const message = input.value.trim();
+      if (!message) return;
+
+      // Add user message to chat
+      const messagesDiv = document.getElementById('messages');
+      messagesDiv.innerHTML += `
+        <div class="flex justify-end">
+          <div class="bg-blue-600 text-white rounded-lg p-4 max-w-3xl">
+            <p>${message}</p>
+          </div>
+        </div>
+      `;
+
+      // Clear input and disable button
+      input.value = '';
+      document.getElementById('sendButton').disabled = true;
+      document.getElementById('suggestions').classList.add('hidden');
+
+      // Show typing indicator
+      messagesDiv.innerHTML += `
+        <div id="typing" class="flex justify-start">
+          <div class="bg-gray-100 rounded-lg p-4">
+            <div class="flex space-x-2">
+              <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+              <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+              <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: message,
+            language: 'de',
+            apiKey: apiKey
+          })
+        });
+
+        const data = await response.json();
+        
+        // Remove typing indicator
+        document.getElementById('typing')?.remove();
+
+        if (data.error) {
+          messagesDiv.innerHTML += `
+            <div class="flex justify-start">
+              <div class="bg-red-100 border border-red-200 rounded-lg p-4 max-w-3xl">
+                <p class="text-red-700">Fehler: ${data.error}</p>
+              </div>
+            </div>
+          `;
+        } else {
+          messagesDiv.innerHTML += `
+            <div class="flex justify-start">
+              <div class="bg-gray-100 rounded-lg p-4 max-w-3xl">
+                <p class="text-gray-800 whitespace-pre-wrap">${data.message}</p>
+                ${data.sources && data.sources.length > 0 ? `
+                  <div class="mt-3 pt-3 border-t border-gray-200">
+                    <p class="text-xs text-gray-500 mb-1">Quellen:</p>
+                    ${data.sources.map(s => `
+                      <a href="${s.url}" target="_blank" class="text-xs text-blue-600 hover:underline block">
+                        ${s.title}
+                      </a>
+                    `).join('')}
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        }
+      } catch (error) {
+        document.getElementById('typing')?.remove();
+        messagesDiv.innerHTML += `
+          <div class="flex justify-start">
+            <div class="bg-red-100 border border-red-200 rounded-lg p-4 max-w-3xl">
+              <p class="text-red-700">Verbindungsfehler. Bitte versuchen Sie es später erneut.</p>
+            </div>
+          </div>
+        `;
+      }
+
+      // Re-enable button and scroll to bottom
+      document.getElementById('sendButton').disabled = false;
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+  </script>
+</body>
+</html>

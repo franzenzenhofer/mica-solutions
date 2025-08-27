@@ -1,0 +1,60 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Production
+build/
+dist/
+**/dist/
+**/build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Testing
+coverage/
+*.lcov
+.nyc_output
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.local
+
+# Cloudflare
+.wrangler/
+.dev.vars
+
+# Docker
+*.log
+
+# TypeScript
+*.tsbuildinfo
+
+# Package managers
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+.turbo
