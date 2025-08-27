@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+// Gemini AI integration via direct API calls
 
 const EVENT_EXTRACTION_PROMPT = `
 Extract event information from the following text. Return a structured JSON with these fields:
@@ -209,20 +209,20 @@ function handleInterface(env, headers) {
       events.forEach(event => {
         const card = document.createElement('div');
         card.className = 'border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow';
-        card.innerHTML = `
-          <h3 class="text-lg font-bold mb-2">${event.title || 'Untitled Event'}</h3>
+        card.innerHTML = \`
+          <h3 class="text-lg font-bold mb-2">\${event.title || 'Untitled Event'}</h3>
           <div class="grid grid-cols-2 gap-2 text-sm">
-            <div><span class="font-medium">Date:</span> ${event.date || 'TBD'}</div>
-            <div><span class="font-medium">Time:</span> ${event.time || 'TBD'}</div>
-            <div><span class="font-medium">Venue:</span> ${event.venue || 'TBD'}</div>
-            <div><span class="font-medium">Category:</span> ${event.category || 'Event'}</div>
-            <div class="col-span-2"><span class="font-medium">Artists:</span> ${(event.artists || []).join(', ') || 'TBD'}</div>
-            <div class="col-span-2"><span class="font-medium">Address:</span> ${event.address || 'TBD'}</div>
-            ${event.description ? `<div class="col-span-2 mt-2"><span class="font-medium">Description:</span> ${event.description}</div>` : ''}
-            ${event.price ? `<div><span class="font-medium">Price:</span> ${event.price}</div>` : ''}
-            ${event.ticketUrl ? `<div><a href="${event.ticketUrl}" target="_blank" class="text-blue-600 hover:underline">Tickets →</a></div>` : ''}
+            <div><span class="font-medium">Date:</span> \${event.date || 'TBD'}</div>
+            <div><span class="font-medium">Time:</span> \${event.time || 'TBD'}</div>
+            <div><span class="font-medium">Venue:</span> \${event.venue || 'TBD'}</div>
+            <div><span class="font-medium">Category:</span> \${event.category || 'Event'}</div>
+            <div class="col-span-2"><span class="font-medium">Artists:</span> \${(event.artists || []).join(', ') || 'TBD'}</div>
+            <div class="col-span-2"><span class="font-medium">Address:</span> \${event.address || 'TBD'}</div>
+            \${event.description ? \`<div class="col-span-2 mt-2"><span class="font-medium">Description:</span> \${event.description}</div>\` : ''}
+            \${event.price ? \`<div><span class="font-medium">Price:</span> \${event.price}</div>\` : ''}
+            \${event.ticketUrl ? \`<div><a href="\${event.ticketUrl}" target="_blank" class="text-blue-600 hover:underline">Tickets →</a></div>\` : ''}
           </div>
-        `;
+        \`;
         container.appendChild(card);
       });
     }
@@ -296,21 +296,32 @@ async function handleExtraction(request, env, headers) {
       );
     }
 
-    // Initialize Gemini
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ 
-      model: 'gemini-pro',
-      generationConfig: {
-        temperature: 0.2,
-        maxOutputTokens: 2048,
-      },
-    });
-
-    // Extract events using AI
+    // Extract events using Gemini API
     const prompt = EVENT_EXTRACTION_PROMPT + text;
-    const result = await model.generateContent(prompt);
-    const response = result.response;
-    const extractedText = response.text();
+    
+    const geminiResponse = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=\${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ text: prompt }]
+          }],
+          generationConfig: {
+            temperature: 0.2,
+            maxOutputTokens: 2048,
+          },
+        }),
+      }
+    );
+
+    if (!geminiResponse.ok) {
+      throw new Error('Gemini API call failed');
+    }
+
+    const geminiData = await geminiResponse.json();
+    const extractedText = geminiData.candidates[0]?.content?.parts[0]?.text || '';
     
     // Parse the JSON response
     let events = [];
@@ -336,7 +347,7 @@ async function handleExtraction(request, env, headers) {
     // Store in KV for future reference
     const eventId = crypto.randomUUID();
     await env.EVENTS_STORE.put(
-      `event_${eventId}`,
+      `event_\${eventId}`,
       JSON.stringify({
         events,
         originalText: text.substring(0, 1000),

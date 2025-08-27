@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+// Gemini AI integration via API calls
 
 const SOURCES_TO_MONITOR = [
   { type: 'website', url: 'https://www.musicaustria.at/musikdatenbank/personen', category: 'artists' },

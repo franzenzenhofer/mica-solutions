@@ -4,15 +4,16 @@ compatibility_date = "2024-01-01"
 
 [[kv_namespaces]]
 binding = "EVENTS_STORE"
-id = "events_store_production"
+id = "9ed1f634f6634a7983b13c601fd1073e"
 
 [[kv_namespaces]]
 binding = "EXTRACTION_CACHE"
-id = "extraction_cache_production"
+id = "55426af61dfb401da0fd3d516f42670a"
 
-[[queues]]
-binding = "EVENT_QUEUE"
-queue = "mica-event-processing"
+# Queue - uncomment when needed
+# [[queues.producers]]
+# binding = "EVENT_QUEUE"
+# queue = "mica-event-processing"
 
 [[routes]]
 pattern = "harvest.mica.franzai.com/*"

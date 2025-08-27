@@ -4,20 +4,21 @@ compatibility_date = "2024-01-01"
 
 [[kv_namespaces]]
 binding = "ARTIST_DATA"
-id = "artist_data_production"
+id = "982b4941446546d9a05bf0d624945552"
 
 [[kv_namespaces]]
 binding = "SYNC_STATE"
-id = "sync_state_production"
+id = "470fd2556d6f4e6f9c0898e7fa3b337c"
 
 [[kv_namespaces]]
 binding = "CHANGE_LOG"
-id = "change_log_production"
+id = "bf81b42a00c6465faf7919c1e5ece085"
 
-[[d1_databases]]
-binding = "DB"
-database_name = "mica-database"
-database_id = "mica-db-production"
+# D1 Database - uncomment when created
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "mica-database"
+# database_id = "mica-db-production"
 
 [triggers]
 crons = ["0 */6 * * *"] # Run every 6 hours
