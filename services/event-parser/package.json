@@ -1,0 +1,23 @@
+{
+  "name": "@mica/event-parser",
+  "version": "1.0.0",
+  "description": "Intelligence Harvester - AI-powered event extraction from emails and documents",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "pdf-parse": "^1.1.1",
+    "mammoth": "^1.6.0",
+    "xlsx": "^0.18.5",
+    "hono": "^4.5.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240815.0",
+    "wrangler": "^3.65.0"
+  }
+}

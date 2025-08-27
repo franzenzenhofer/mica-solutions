@@ -1,0 +1,22 @@
+name = "mica-intelligence-harvester"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "EVENTS_STORE"
+id = "events_store_production"
+
+[[kv_namespaces]]
+binding = "EXTRACTION_CACHE"
+id = "extraction_cache_production"
+
+[[queues]]
+binding = "EVENT_QUEUE"
+queue = "mica-event-processing"
+
+[[routes]]
+pattern = "harvest.mica.franzai.com/*"
+zone_name = "franzai.com"
+
+[vars]
+ENVIRONMENT = "production"

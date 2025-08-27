@@ -1,0 +1,32 @@
+name = "mica-reality-sync"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "ARTIST_DATA"
+id = "artist_data_production"
+
+[[kv_namespaces]]
+binding = "SYNC_STATE"
+id = "sync_state_production"
+
+[[kv_namespaces]]
+binding = "CHANGE_LOG"
+id = "change_log_production"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mica-database"
+database_id = "mica-db-production"
+
+[triggers]
+crons = ["0 */6 * * *"] # Run every 6 hours
+
+[[routes]]
+pattern = "reality.mica.franzai.com/*"
+zone_name = "franzai.com"
+
+[vars]
+ENVIRONMENT = "production"
+MAX_CONCURRENT_SCRAPES = "10"
+CONFIDENCE_THRESHOLD = "0.7"
