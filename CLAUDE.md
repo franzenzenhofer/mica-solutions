@@ -1,10 +1,64 @@
-# CLAUDE.md - MICA Solutions Development Guide
+# CLAUDE.md
 
-This file provides guidance to Claude Code when working with the MICA Solutions Platform.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 🎯 Project Mission
+## 🛠️ Development Commands
 
-Transform Music Austria's digital operations through AI-powered automation, solving real pain points with practical, production-ready solutions.
+### Core Commands
+```bash
+# Installation & Setup
+npm install                     # Install all dependencies (workspaces)
+docker-compose up -d            # Start local services
+
+# Development
+npm run dev                     # Run all services in parallel
+npm run dev:praxiswissen       # Run specific service
+npm run dev:database-sync      
+npm run dev:event-parser       
+
+# Building
+npm run build                  # Build shared libs + all services
+npm run build:shared           # Build shared components only
+npm run build:services         # Build all services in parallel
+
+# Testing
+npm run test                   # Run all tests (unit + e2e + integration)
+npm run test:unit              # Run unit tests with Vitest
+npm run test:e2e               # Run Playwright E2E tests
+npm run test:integration       # Run integration tests
+
+# Code Quality
+npm run lint                   # ESLint check (.ts, .tsx)
+npm run typecheck              # TypeScript type checking
+npm run format                 # Prettier formatting
+
+# Deployment
+npm run deploy:staging         # Deploy to staging environment
+npm run deploy:production      # Deploy to production
+```
+
+### Service-Specific Development
+Each service can be run independently:
+```bash
+cd services/praxiswissen-search && npm run dev
+cd services/database-sync && npm run dev
+cd services/event-parser && npm run dev
+```
+
+## 🏗️ Architecture Overview
+
+### Monorepo Structure
+- **Workspaces**: Root manages `shared` and `services/*` via npm workspaces
+- **Shared Module**: `@mica/shared` contains auth, components, utils, types, and API clients
+- **Services**: Independent microservices deployed to Cloudflare Workers
+- **Deployment**: Each service has its own `wrangler.toml` for Cloudflare deployment
+
+### Key Technologies
+- **Runtime**: Cloudflare Workers (edge computing)
+- **AI/LLM**: Google Gemini AI (user provides API keys)
+- **Storage**: Cloudflare KV (cache), D1 (database), R2 (files)
+- **Frontend**: React + TypeScript + Vite
+- **Testing**: Vitest (unit), Playwright (E2E)
 
 ## 🏗️ Architecture Principles
 
@@ -32,103 +86,6 @@ Transform Music Austria's digital operations through AI-powered automation, solv
 - User consent management
 - Audit logging
 
-## 📁 Project Structure
-
-```
-/dev/mica/
-├── PROJECT_BRIEFING.md        # Comprehensive project overview
-├── CLAUDE.md                   # This file
-├── README.md                   # Public documentation
-├── package.json                # Root package management
-├── tsconfig.json              # TypeScript configuration
-├── .env.example               # Environment variables template
-├── docker-compose.yml         # Local development setup
-│
-├── shared/                    # Shared components and utilities
-│   ├── auth/                 # Authentication module
-│   ├── components/           # Reusable UI components
-│   ├── utils/               # Common utilities
-│   ├── types/               # TypeScript definitions
-│   └── api/                 # API client libraries
-│
-├── services/                  # Individual solutions
-│   ├── praxiswissen-search/ # AI chatbot
-│   ├── database-sync/       # Data synchronization
-│   ├── event-parser/        # Email processing
-│   ├── festival-updater/    # List maintenance
-│   ├── biography-manager/   # Bio updates
-│   ├── works-catalog/       # Catalog management
-│   ├── analytics-dashboard/ # Matomo integration
-│   ├── crm-updater/        # CRM automation
-│   ├── workshop-insights/   # Registration analysis
-│   ├── music-map/          # Interactive map
-│   ├── transcription-hub/  # Audio to text
-│   ├── report-generator/   # Automated reports
-│   ├── photo-processor/    # Image optimization
-│   ├── seo-optimizer/      # SEO analysis
-│   └── office-assistant/   # Task automation
-│
-├── infrastructure/           # Deployment configurations
-│   ├── cloudflare/         # Workers and Pages config
-│   ├── docker/             # Container definitions
-│   ├── kubernetes/         # K8s manifests
-│   └── terraform/          # Infrastructure as Code
-│
-├── scripts/                 # Automation scripts
-│   ├── deploy.sh          # Deployment automation
-│   ├── backup.sh          # Backup procedures
-│   └── migrate.sh         # Database migrations
-│
-└── docs/                   # Documentation
-    ├── api/               # API documentation
-    ├── user-guides/       # User manuals
-    └── technical/         # Technical docs
-```
-
-## 🛠️ Development Commands
-
-### Initial Setup
-```bash
-# Clone and setup
-git clone https://github.com/franzenzenhofer/mica-solutions.git
-cd mica-solutions
-npm install
-cp .env.example .env
-
-# Start local services
-docker-compose up -d
-npm run dev
-```
-
-### Individual Services
-```bash
-# Development
-npm run dev:praxiswissen       # Start Praxiswissen search
-npm run dev:database-sync      # Start Database sync
-npm run dev:event-parser       # Start Event parser
-# ... etc for each service
-
-# Building
-npm run build:all              # Build all services
-npm run build:praxiswissen     # Build specific service
-
-# Testing
-npm run test                   # Run all tests
-npm run test:e2e              # End-to-end tests
-npm run test:integration      # Integration tests
-```
-
-### Deployment
-```bash
-# Deploy to staging
-npm run deploy:staging
-
-# Deploy to production
-npm run deploy:production
-
-# Deploy specific service
-npm run deploy:praxiswissen --env=production
-```
 
 ## 🔑 Key Implementation Guidelines
 
@@ -381,32 +338,66 @@ Each solution must:
 7. Be fully GDPR compliant
 8. Include user training
 
-## 🔧 Troubleshooting
+## 🌐 Cloudflare Worker Deployment
 
-### Common Issues
+### Wrangler CLI
+```bash
+# Deploy individual service
+cd services/praxiswissen-search
+wrangler deploy
 
-1. **Database Connection**
-   - Check connection string
-   - Verify network access
-   - Check connection pool
+# Deploy all services
+./deploy-all.sh
 
-2. **AI Service Errors**
-   - Verify API keys
-   - Check rate limits
-   - Review token usage
+# Local development with Wrangler
+wrangler dev --local
+```
 
-3. **Performance Issues**
-   - Check database indexes
-   - Review caching strategy
-   - Analyze query patterns
+### Environment Variables
+Each service needs Cloudflare KV namespaces and D1 databases configured in `wrangler.toml`:
+```toml
+kv_namespaces = [
+  { binding = "CACHE", id = "your-kv-id" }
+]
 
-## 📞 Support Channels
+[[d1_databases]]
+binding = "DB"
+database_name = "mica-db"
+database_id = "your-db-id"
+```
 
-- **Development**: dev@mica.franzai.com
-- **Issues**: GitHub Issues
-- **Slack**: #mica-dev
-- **Documentation**: docs.mica.franzai.com
+## 🔑 API Integration Pattern
 
----
+### User-Provided API Keys
+Services use client-side API keys for Gemini AI:
+```typescript
+// Client stores key in localStorage
+const apiKey = localStorage.getItem('gemini_api_key');
 
-**Remember**: Always prioritize solving the real problem over technical elegance. These tools must work reliably for non-technical users in production environments.
+// Pass to worker via headers
+fetch('/api/chat', {
+  headers: { 
+    'X-API-Key': apiKey 
+  }
+})
+```
+
+## 📊 Key Pain Points Being Solved
+
+1. **Praxiswissen Search**: Replace manual FAQ responses with AI-powered instant answers
+2. **Database Sync**: Automate manual data entry from 100+ artist websites
+3. **Event Parser**: Extract structured event data from unstructured emails/PDFs
+4. **Festival Updater**: Keep festival participant lists current automatically
+5. **Biography Manager**: Synchronize artist bios across multiple platforms
+
+## 🧪 Testing Strategy
+
+- **Unit Tests**: Test individual functions and components in isolation
+- **Integration Tests**: Test service interactions and external API calls
+- **E2E Tests**: Test complete user workflows in browser
+
+Run specific test suites:
+```bash
+npm run test:unit -- services/praxiswissen-search
+npm run test:e2e -- --grep "chat interface"
+```
