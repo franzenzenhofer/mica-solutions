@@ -9,11 +9,16 @@
 
 ## 🚀 Live Services
 
-| Service | Description | Live URL | Status |
-|---------|-------------|----------|--------|
-| **Neural Knowledge Network** | AI-powered Q&A assistant for music industry | [praxiswissen.mica.franzai.com](https://praxiswissen.mica.franzai.com) | ✅ Live |
-| **Reality Sync Engine** | Automated database synchronization | [reality.mica.franzai.com](https://reality.mica.franzai.com) | 🚧 Beta |
-| **Intelligence Harvester** | Event extraction from emails/documents | [harvest.mica.franzai.com](https://harvest.mica.franzai.com) | 🚧 Beta |
+| Service | Description | Live URL | Status | Deployment |
+|---------|-------------|----------|--------|------------|
+| **Main Dashboard** | Central hub for all MICA services | [mica.franzai.com](https://mica.franzai.com) | ✅ Live | August 28, 2025 |
+| **Neural Knowledge Network** | AI-powered Q&A assistant for music industry | [praxiswissen.mica.franzai.com](https://praxiswissen.mica.franzai.com) | ✅ Deployed | August 28, 2025 |
+| **Reality Sync Engine** | Automated database synchronization | [reality.mica.franzai.com](https://reality.mica.franzai.com) | ✅ Deployed | August 28, 2025 |
+| **Intelligence Harvester** | Event extraction from emails/documents | [harvest.mica.franzai.com](https://harvest.mica.franzai.com) | ✅ Deployed | August 28, 2025 |
+
+### 📊 Service Health Check
+- **API Status**: [mica.franzai.com/api/health](https://mica.franzai.com/api/health)
+- **Monitor Script**: Run `./monitor-services.sh` to check live status
 
 ## 🎯 Mission
 
