@@ -1,5 +1,5 @@
 name = "mica-praxiswissen"
-main = "simple-worker.js"
+main = "ai-worker.js"
 compatibility_date = "2024-01-01"
 
 [site]
@@ -16,7 +16,7 @@ binding = "USER_SESSIONS"
 id = "93d52637f75b4dcbbc59d28c56dabb4c"
 
 [[routes]]
-pattern = "praxiswissen.mica.franzai.com/*"
+pattern = "mica-knowledge.franzai.com/*"
 zone_name = "franzai.com"
 
 [vars]

@@ -1,0 +1,55 @@
+Fragestellungen KI Anwendung mica
+
+https://www.musicaustria.at/praxiswissen/
+Hier habe wir an eine KI-Suchfunktion bzw. einen Chatbot gedacht, den wir uns selbst bauen und die unser Praxiswissen durchsucht und unser Beratungsteam entlastet, indem allgemeine – als nicht individuelle – Anteile von Fragestellungen zunächst mal im Praxiswissen gelesen werden bzw. über die KI-Suche gefunden werden. 
+Eine erweiterte Idee davon ist, die KI über mehrere ausgewählte Websites suchen zu lassen, bzw. sie auf mehrere Websites zu trainieren, da es für ein paar Bereiche anderswo sehr gute FAQs gibt.
+Langfristig: Werden wir für bestimmte Bereiche nur mehr diesen Chatbot anbieten statt Informationen zu sammeln und zu texten? Das wird allerdings sicher nur für bestimmte ausgewählte Bereiche funktionieren, einiges ist bei uns exklusiv zu finden bzw. in dieser Form exklusiv.
+Aktualisierung des Praxiswissens – veraltete Inhalte herausfinden und überarbeiten: Vermutlich eine heikle Angelegenheit, weil KI Daten erfindet und fantasiert. Alles muss nachgeprüft werden. Vermutlich keine Arbeitserleichterung, oder doch? 
+
+https://db.musicaustria.at/
+Hier sammeln wir Infos zu österreichischen Musikschaffenden, v.a. zu Komponist:innen aus dem Bereich zeitgenössische Musik und Jazzmusiker:innen (f. Pop gibt es das SR-Achiv).
+Ziel wäre eigentlich, dass die Daten immer aktuell sind, davon sind wir weit entfernt.
+Use-Case: Das Datenbank-Team durchforstet die Websites der Musikschaffenden und ihrer Verlage nach neuen Informationen. Die Informationen bzw. Daten sind sehr unterschiedlich strukturiert bzw. sortiert. Aktualisiert werden Werklisten und Biographien.
+Wie kann KI uns dabei helfen, die veraltete Version eines biographischen Datensatzes in unserer Datenbank mit der Website der jeweiligen Personen bzw. Verlage abzugleichen?
+Wie kann KI uns bei der Aktualisierung der Werklisten unterstützen? Es geht um die Suche nach neuen Werken und den Transfer dieser Daten im richtigen Format in unsere Datenbank.
+Fallweise bekommen wir Daten per E-Mail. Lässt sich in diesem Fall KI einsetzen, um den Vorgang des Abgleichens der Daten effizienter zu gestalten?
+Chatbot geführte Suche bzw. Suchhilfe zwecks Ergänzung unserer jetzigen Suchmöglichkeiten bzw. Filter in der Datenbank.
+Eine Fragestellung wäre auch, ob Datenbanken wie diese mittelfristig völlig anders gehandhabt werden und wir nur mehr einen Chatbot pflegen bzw. zusätzlich sinnvolle Suchvorgänge bzw. Prompts vorschlagen? Also kein Einpflegen von Daten mehr, sondern Einsatz eines Scrapers in Verbindung mit KI-Tools?
+
+
+Es geht auch um die Aktualisierung von Listen wie z.B. diese: https://www.musicaustria.at/bundeslaender/burgenland/festivals/
+Ist es noch sinnvoll solche kuratierten Listen zu machen?
+Falls ja, wie können wir das effizienter machen? Derzeit gehen wir die Datensätze einzeln durch und gleichen ab, ob sich Daten geändert haben, bzw. ob es die Organisation noch gibt.
+Die Aktualisierung wurde bisher im CRM gemacht, die Daten anschließend auf die Website ausgespielt.
+ 
+Wir haben auch einen Veranstaltungskalender mit Konzerten österr. Musikschaffender. Unser Team versucht gerade, einen mehrstufigen Prozess aufzusetzen, um den Vorgang effizienter zu machen.
+Seiten von Venues lassen sich halbwegs gut scrapen. Veranstaltungsankündigungen die uns via email geschickt werden, würden wir gerne mit KI aufbereiten. Am Ende sollte eine xls Liste bei rauskommen, die wir nur noch importieren müssen. Ist das realistisch?
+
+Gehen unsere Überlegungen überhaupt in die richtige Richtung? 
+
+Weitere Fragestellungen
+
+AI-Optimierung alle Websites: was ist zu tun? Ist etwas zu tun? Oder eher Opt-Out aus KI?
+https://www.musicaustria.at/ 
+https://www.musicexport.at/
+https://db.musicaustria.at/
+
+
+Berichte schreiben: hoher Zeitaufwand, Monatsberichte sollten in Jahresbericht einfließen ohne dass etwas vergessen wird 
+
+Ist der Überblick über unsere Website-Nutzungszahlen in Matomo mit KI automatisch erstellbar?  Analyse aller bereits existierenden Daten bzw. von uns gesammelten Daten/Kennzahlen (Matomo, Social Media KPIs, Newsletter, Umfrageergebnisse), um klarer zu erkennen welche Posts die Zugriffe auf unsere Website motivieren und verstärken.
+
+CRM-Aktualisierung für einzelne Projekte: Aktualisierung von Adressdatensätzen, z.B. Klassik/neue Musik Ensembles für Messen bzw. Ergänzung neuer Ensembles, Letzteres hat bisher nicht funktioniert mit ChatGPT, könnte das in Zukunft der Fall sein?
+In-depht Analyse der Anmeldungen zu Workshops - wer kommt über welchen Kanal und wie können wir dann auch evtl. schlechte Ergebnisse (z.B. Thema Mental Load stößt auf viel Interesse, hat aber wenige/keinen Anmeldungen) umdrehen?
+
+Landkarte mit Musik-Institutionen und Hörminuten für das Volksschulprojekt Hörminute
+https://www.hoerminute.at/
+
+Welche alltäglichen Büroaufgaben lassen sich durch KI heute schon zuverlässig unterstützen oder automatisieren? Welche Tools oder Anwendungen sind im Büro besonders nützlich?  Wie lässt sich KI in Kombination mit bestehenden Office-Programmen (z. B. MS Office, Google Workspace) sinnvoll nutzen?
+Wie kann KI bei der Organisation und Priorisierung von Aufgaben unterstützen?
+
+Transkription von Interviews: Audio zu Text. Welche Transkriptionsprogramme lassen sich gut mit Chat GPT u. ä. kombinieren?  Wie kann KI Teammeetings unterstützen z. B. durch Protokollierung oder Übersetzung
+Fotobearbeitung zur Veröffentlichung auf der Website ist im Alltag doch hier und da ein Zeitfresser. Gibt es dafür eine nützliche Hilfe, abseits des Photoshop Intensivkurses?
+KI-Chatbot um auf der Website besser nach Themen suchen zu können.
+
+Ist Mistral (Le Chat) eine gute Alternative zu Chat GPT für unsere Zwecke? (Europäischer Anbieter, DSGVO)

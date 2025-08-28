@@ -16,7 +16,7 @@ id = "55426af61dfb401da0fd3d516f42670a"
 # queue = "mica-event-processing"
 
 [[routes]]
-pattern = "harvest.mica.franzai.com/*"
+pattern = "mica-harvest.franzai.com/*"
 zone_name = "franzai.com"
 
 [vars]

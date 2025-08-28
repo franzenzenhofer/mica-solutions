@@ -24,7 +24,7 @@ id = "bf81b42a00c6465faf7919c1e5ece085"
 crons = ["0 */6 * * *"] # Run every 6 hours
 
 [[routes]]
-pattern = "reality.mica.franzai.com/*"
+pattern = "mica-reality.franzai.com/*"
 zone_name = "franzai.com"
 
 [vars]
